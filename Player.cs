@@ -43,7 +43,6 @@ public class Player : MonoBehaviour {
 	{
 		transform.localScale *= 1.1f;
 		speed *= 0.9f;
-		Debug.Log(speed);
 	}
 
 	public void respawn()
