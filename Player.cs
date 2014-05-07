@@ -12,6 +12,7 @@ public class Player : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		gameObject.name = "Player";
 		startSpeed = 3.0f;
 		respawn();
 	}
@@ -56,7 +57,7 @@ public class Player : MonoBehaviour {
 		transform.localScale = new Vector2(6.0f, 6.0f);
 		speed = startSpeed;
 		GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, -1.0f * speed);
-		StartCoroutine("spawnTrail");
+		//StartCoroutine("spawnTrail");
 	}
 
 	private Vector2 randSpawnPoint()
@@ -67,11 +68,12 @@ public class Player : MonoBehaviour {
 		             GameObject.Find("Arena").transform.renderer.bounds.size.y/3));
 	}
 
+	/*
 	private IEnumerator spawnTrail()
 	{
 		trailRendered = false;
 		yield return new WaitForSeconds(0.5f);
 		trailRendered = true;
 		GetComponent<TrailRenderer>().enabled = true;
-	}
+	}*/
 }

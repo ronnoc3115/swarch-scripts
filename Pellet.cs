@@ -8,6 +8,7 @@ public class Pellet : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		gameObject.name = "Pellet";
 		spawn();
 	}
 	
