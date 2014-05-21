@@ -10,10 +10,12 @@ public class Player : MonoBehaviour {
 	private float speed;
 	private bool trailRendered = true;
 	private int ID;
+	//private bool colorSet;
 	public string input;
 
 	// Use this for initialization
 	void Start () {
+		//colorSet = false;
 		input = "";
 		//gameObject.name = "Player" + ID;
 		startSpeed = 3.0f;
@@ -28,10 +30,20 @@ public class Player : MonoBehaviour {
 
 		//gameObject.name = "Player" + ID;
 
-		if (GameObject.Find("GameLogic").GetComponent<UI>().getPlayerID() != ID)
+		//if(!colorSet)
+		//{
+		if (GameObject.Find("Game Logic").GetComponent<UI>().getPlayerID() != ID)
 		{
 			gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+			//colorSet = true;
 		}
+		else
+		{
+			gameObject.GetComponent<SpriteRenderer>().color = Color.blue;
+		}
+			//else
+				//colorSet = true;
+		//}
 
 		if(Input.GetKeyDown(KeyCode.UpArrow))
 		{
@@ -66,7 +78,7 @@ public class Player : MonoBehaviour {
 
 	public void changeSize(float newSize)
 	{
-		transform.localScale = new Vector3(newSize, newSize);
+		transform.localScale = new Vector3(newSize, newSize) *6;
 	}
 
 	public void respawn(float respawnX, float respawnY)
