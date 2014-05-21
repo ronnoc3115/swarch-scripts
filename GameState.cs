@@ -9,7 +9,7 @@ using System.Threading;
 public class GameState : MonoBehaviour {
 	public GameObject player;
 	public GameObject pellet;
-
+	
 	private NetHandler netHandler;
 	private Thread queueThread;
 	//to call ui methods easier
@@ -28,12 +28,29 @@ public class GameState : MonoBehaviour {
 	private float pellet3Y;
 	private float pellet4X;
 	private float pellet4Y;
-	//info on player being looked at
-	private int playerID;
-	private string playerName;
-	private float playerX;
-	private float playerY;
-	private float playerSize;
+	//player positions
+	//had to make individual variables to avoid thread colissions
+	private float player1X;
+	private float player1Y;
+	private int player1ID;
+	private string player1Name;
+	private float player1Size;
+	private float player2X;
+	private float player2Y;
+	private int player2ID;
+	private string player2Name;
+	private float player2Size;
+	private float player3X;
+	private float player3Y;
+	private int player3ID;
+	private string player3Name;
+	private float player3Size;
+	private float player4X;
+	private float player4Y;
+	private int player4ID;
+	private string player4Name;
+	private float player4Size;
+	
 	//info on client's user info
 	//used to give UI info to display, and change colors appropriately
 	private int userID;
@@ -45,14 +62,14 @@ public class GameState : MonoBehaviour {
 	private bool settingPelletSpawn;
 	private bool settingPlayerSpawn;
 	private bool settingPlayerSize;
-
+	
 	private bool settingUserInfo;
 	//instantiate pellets and players
 	private bool gameStart;
-
+	
 	// Use this for initialization
 	void Start () {
-	
+		
 		netHandler = gameObject.GetComponent<NetHandler>();
 		ui = gameObject.GetComponent<UI>();
 		numPlayers = 0;
@@ -65,33 +82,48 @@ public class GameState : MonoBehaviour {
 		pellet3Y = 0.0f;
 		pellet4X = 0.0f;
 		pellet4Y = 0.0f;
-
-		playerID = 0;
-		playerName = "";
-		playerX = 0.0f;
-		playerY = 0.0f;
-		playerSize = 0.0f;
-
+		
+		player1X = 0.0f;
+		player1Y = 0.0f;
+		player1ID = 1;
+		player1Name = "";
+		player1Size = 1;
+		player2X = 0.0f;
+		player2Y = 0.0f;
+		player2ID = 2;
+		player2Name = "";
+		player2Size = 1;
+		player3X = 0.0f;
+		player3Y = 0.0f;
+		player3ID = 3;
+		player3Name = "";
+		player3Size = 1;
+		player4X = 0.0f;
+		player4Y = 0.0f;
+		player4ID = 4;
+		player4Name = "";
+		player4Size = 1;
+		
 		userID = 0;
 		userName = "";
-
+		
 		queueThread = new Thread(new ThreadStart(readFromQueue));
 		queueThread.Start();
-
+		
 		settingPlayerID = false;
 		settingPlayerName = false;
 		settingPelletSpawn = false;
 		settingPlayerSpawn = false;
 		settingPlayerSize = false;
-
+		
 		settingUserInfo = false;
-
+		
 		gameStart = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		
 		if(gameStart)
 		{
 			//create as many players as the server says are connected
@@ -113,38 +145,38 @@ public class GameState : MonoBehaviour {
 			ui.showGUI = false;
 			gameStart = false;
 		}
-
+		
 		if(settingPelletSpawn)
 		{
 			setPelletSpawn();
 		}
-
+		
 		if(settingPlayerID)
 		{
 			setPlayerID();
 		}
-
+		
 		if(settingPlayerName)
 		{
 			setPlayerName();
 		}
-
+		
 		if(settingPlayerSpawn)
 		{
 			setPlayerSpawn();
 		}
-
+		
 		if(settingPlayerSize)
 		{
 			setPlayerSize();
 		}
-
+		
 		if(settingUserInfo)
 		{
 			setUserInfo();
 		}
 	}
-
+	
 	private void setPelletSpawn()
 	{
 		//set positions for each pellet
@@ -154,35 +186,55 @@ public class GameState : MonoBehaviour {
 		GameObject.Find("Pellet4").GetComponent<Pellet>().spawn(pellet4X, pellet4Y);
 		settingPelletSpawn = false;
 	}
-
+	
 	private void setPlayerID()
 	{
 		//set ID on player's Player.cs
-		GameObject.Find("Player" + playerID).GetComponent<Player>().setID(playerID);
+		//GameObject.Find("Player" + playerID).GetComponent<Player>().setID(playerID);
 		settingPlayerID = false;
 	}
-
+	
 	private void setPlayerName()
 	{
 		//set name on UI
-		GameObject.Find("Game Logic").GetComponent<UI>().setNametoChange(playerName);
-		GameObject.Find("Game Logic").GetComponent<UI>().setIDNametoChange(playerID);
+		GameObject.Find("Game Logic").GetComponent<UI>().setNametoChange(player1Name);
+		GameObject.Find("Game Logic").GetComponent<UI>().setIDNametoChange(player1ID);
+		GameObject.Find("Game Logic").GetComponent<UI>().setNametoChange(player2Name);
+		GameObject.Find("Game Logic").GetComponent<UI>().setIDNametoChange(player2ID);
+		GameObject.Find("Game Logic").GetComponent<UI>().setNametoChange(player3Name);
+		GameObject.Find("Game Logic").GetComponent<UI>().setIDNametoChange(player3ID);
+		GameObject.Find("Game Logic").GetComponent<UI>().setNametoChange(player4Name);
+		GameObject.Find("Game Logic").GetComponent<UI>().setIDNametoChange(player4ID);
 		settingPlayerName = false;
 	}
-
+	
 	//bad name. only sets position
 	private void setPlayerSpawn()
 	{
-		GameObject.Find("Player" + playerID).GetComponent<Player>().respawn(playerX, playerY);
+		if(GameObject.Find("Player1")!=null)
+			GameObject.Find("Player1").GetComponent<Player>().respawn(player1X, player1Y);
+		if(GameObject.Find("Player2")!=null)
+			GameObject.Find("Player2").GetComponent<Player>().respawn(player2X, player2Y);
+		if(GameObject.Find("Player3")!=null)
+			GameObject.Find("Player3").GetComponent<Player>().respawn(player3X, player3Y);
+		if(GameObject.Find("Player4")!=null)
+			GameObject.Find("Player4").GetComponent<Player>().respawn(player4X, player4Y);
 		settingPlayerSpawn = false;
 	}
-
+	
 	private void setPlayerSize()
 	{
-		GameObject.Find("Player" + playerID).GetComponent<Player>().changeSize(playerSize);
+		if(GameObject.Find("Player1")!=null)
+			GameObject.Find("Player1").GetComponent<Player>().changeSize(player1Size);
+		if(GameObject.Find("Player2")!=null)
+			GameObject.Find("Player2").GetComponent<Player>().changeSize(player2Size);
+		if(GameObject.Find("Player3")!=null)
+			GameObject.Find("Player3").GetComponent<Player>().changeSize(player3Size);
+		if(GameObject.Find("Player4")!=null)
+			GameObject.Find("Player4").GetComponent<Player>().changeSize(player4Size);
 		settingPlayerSize = false;
 	}
-
+	
 	private void setUserInfo()
 	{
 		//set UI based on user ID and name
@@ -199,7 +251,7 @@ public class GameState : MonoBehaviour {
 			if(netHandler.readQueue.Count > 0)
 			{
 				string[] command = netHandler.readQueue.Dequeue();
-
+				
 				//command statements based on first command
 				switch(command[0])
 				{
@@ -232,27 +284,44 @@ public class GameState : MonoBehaviour {
 						pellet4Y = (float.Parse(command[11]));
 						settingPelletSpawn = true;
 						//set player info based on how many players server said are connected
-						for(int i = 0; i < numPlayers; i++)
+						if(numPlayers >= 1)
 						{
-							playerID = (int.Parse(command[13+i]));
-							playerName = ((command[14+i]).ToString());
+							//playerID = (int.Parse(command[13]));
+							player1Name = ((command[14]).ToString());
 							//if the ID of player being looked at matches the ID of this client's user, then this is the user's name and ID
-							if(int.Parse(command[13+i])==int.Parse(command[2]))
+							if(int.Parse(command[13])==int.Parse(command[2]))
 							{
 								//send this info to UI for personalization of client aesthetics
-								userID = (int.Parse(command[13+i]));
-								userName = ((command[14+i]).ToString());
+								userID = (int.Parse(command[13]));
+								userName = ((command[14]).ToString());
 								settingUserInfo = true;
 							}
 							//set info of player being looked at
-							playerX = (float.Parse(command[15+i]));
-							playerY = (float.Parse(command[16+i]));
-							playerSize = (float.Parse(command[17+i]));
-							settingPlayerID = true;
-							settingPlayerName = true;
-							settingPlayerSpawn = true;
-							settingPlayerSize = true;
+							player1X = (float.Parse(command[15]));
+							player1Y = (float.Parse(command[16]));
+							player1Size = (float.Parse(command[17]));
 						}
+						if(numPlayers >= 2)
+						{
+							//playerID = (int.Parse(command[13]));
+							player1Name = ((command[19]).ToString());
+							//if the ID of player being looked at matches the ID of this client's user, then this is the user's name and ID
+							if(int.Parse(command[18])==int.Parse(command[2]))
+							{
+								//send this info to UI for personalization of client aesthetics
+								userID = (int.Parse(command[18]));
+								userName = ((command[19]).ToString());
+								settingUserInfo = true;
+							}
+							//set info of player being looked at
+							player1X = (float.Parse(command[20]));
+							player1Y = (float.Parse(command[21]));
+							player1Size = (float.Parse(command[22]));
+						}
+						//settingPlayerID = true;
+						settingPlayerName = true;
+						settingPlayerSpawn = true;
+						settingPlayerSize = true;
 					}
 					break;
 					//sent constantly by server to keep client on track
@@ -266,19 +335,27 @@ public class GameState : MonoBehaviour {
 					pellet3Y = (float.Parse(command[6]));
 					pellet4X = (float.Parse(command[7]));
 					pellet4Y = (float.Parse(command[8]));
-
+					
 					numPlayers = (int.Parse(command[9]));
-
-					for(int i = 0; i < numPlayers; i++)
+					
+					if(numPlayers >= 1)
 					{
-						playerID = (int.Parse(command[10+i]));
-						playerName = ((command[11+i]).ToString());
-						playerX = (float.Parse(command[12+i]));
-						playerY = (float.Parse(command[13+i]));
-						playerSize = (float.Parse(command[14+i]));
-						settingPlayerSpawn = true;
-						settingPlayerSize = true;
+						player1ID = (int.Parse(command[10]));
+						player1Name = ((command[11]).ToString());
+						player1X = (float.Parse(command[12]));
+						player1Y = (float.Parse(command[13]));
+						player1Size = (float.Parse(command[14]));
 					}
+					if(numPlayers >= 2)
+					{
+						player1ID = (int.Parse(command[15]));
+						player1Name = ((command[16]).ToString());
+						player1X = (float.Parse(command[17]));
+						player1Y = (float.Parse(command[18]));
+						player1Size = (float.Parse(command[19]));
+					}
+					settingPlayerSpawn = true;
+					settingPlayerSize = true;
 					break;
 				case "updateScore":
 					//timestamp needed here
