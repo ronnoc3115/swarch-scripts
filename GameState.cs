@@ -85,22 +85,22 @@ public class GameState : MonoBehaviour {
 		
 		player1X = 0.0f;
 		player1Y = 0.0f;
-		player1ID = 1;
+		player1ID = 0;
 		player1Name = "";
 		player1Size = 1;
 		player2X = 0.0f;
 		player2Y = 0.0f;
-		player2ID = 2;
+		player2ID = 0;
 		player2Name = "";
 		player2Size = 1;
 		player3X = 0.0f;
 		player3Y = 0.0f;
-		player3ID = 3;
+		player3ID = 0;
 		player3Name = "";
 		player3Size = 1;
 		player4X = 0.0f;
 		player4Y = 0.0f;
-		player4ID = 4;
+		player4ID = 0;
 		player4Name = "";
 		player4Size = 1;
 		
@@ -286,7 +286,7 @@ public class GameState : MonoBehaviour {
 						//set player info based on how many players server said are connected
 						if(numPlayers >= 1)
 						{
-							//playerID = (int.Parse(command[13]));
+							player1ID = (int.Parse(command[13]));
 							player1Name = ((command[14]).ToString());
 							//if the ID of player being looked at matches the ID of this client's user, then this is the user's name and ID
 							if(int.Parse(command[13])==int.Parse(command[2]))
@@ -303,7 +303,7 @@ public class GameState : MonoBehaviour {
 						}
 						if(numPlayers >= 2)
 						{
-							//playerID = (int.Parse(command[18]));
+							player2ID = (int.Parse(command[18]));
 							player2Name = ((command[19]).ToString());
 							//if the ID of player being looked at matches the ID of this client's user, then this is the user's name and ID
 							if(int.Parse(command[18])==int.Parse(command[2]))
@@ -320,8 +320,8 @@ public class GameState : MonoBehaviour {
 						}
 						if(numPlayers >= 3)
 						{
-							//playerID = (int.Parse(command[23]));
-							player2Name = ((command[24]).ToString());
+							player3ID = (int.Parse(command[23]));
+							player3Name = ((command[24]).ToString());
 							//if the ID of player being looked at matches the ID of this client's user, then this is the user's name and ID
 							if(int.Parse(command[23])==int.Parse(command[2]))
 							{
@@ -331,14 +331,14 @@ public class GameState : MonoBehaviour {
 								settingUserInfo = true;
 							}
 							//set info of player being looked at
-							player2X = (float.Parse(command[25]));
-							player2Y = (float.Parse(command[26]));
-							player2Size = (float.Parse(command[27]));
+							player3X = (float.Parse(command[25]));
+							player3Y = (float.Parse(command[26]));
+							player3Size = (float.Parse(command[27]));
 						}
 						if(numPlayers >= 4)
 						{
-							//playerID = (int.Parse(command[28]));
-							player2Name = ((command[29]).ToString());
+							player4ID = (int.Parse(command[28]));
+							player4Name = ((command[29]).ToString());
 							//if the ID of player being looked at matches the ID of this client's user, then this is the user's name and ID
 							if(int.Parse(command[28])==int.Parse(command[2]))
 							{
@@ -348,9 +348,9 @@ public class GameState : MonoBehaviour {
 								settingUserInfo = true;
 							}
 							//set info of player being looked at
-							player2X = (float.Parse(command[30]));
-							player2Y = (float.Parse(command[31]));
-							player2Size = (float.Parse(command[32]));
+							player4X = (float.Parse(command[30]));
+							player4Y = (float.Parse(command[31]));
+							player4Size = (float.Parse(command[32]));
 						}
 						//settingPlayerID = true;
 						settingPlayerName = true;
@@ -382,27 +382,27 @@ public class GameState : MonoBehaviour {
 					}
 					if(numPlayers >= 2)
 					{
-						player1ID = (int.Parse(command[15]));
-						player1Name = ((command[16]).ToString());
-						player1X = (float.Parse(command[17]));
-						player1Y = (float.Parse(command[18]));
-						player1Size = (float.Parse(command[19]));
+						player2ID = (int.Parse(command[15]));
+						player2Name = ((command[16]).ToString());
+						player2X = (float.Parse(command[17]));
+						player2Y = (float.Parse(command[18]));
+						player2Size = (float.Parse(command[19]));
 					}
 					if(numPlayers >= 3)
 					{
-						player1ID = (int.Parse(command[20]));
-						player1Name = ((command[21]).ToString());
-						player1X = (float.Parse(command[22]));
-						player1Y = (float.Parse(command[23]));
-						player1Size = (float.Parse(command[24]));
+						player3ID = (int.Parse(command[20]));
+						player3Name = ((command[21]).ToString());
+						player3X = (float.Parse(command[22]));
+						player3Y = (float.Parse(command[23]));
+						player3Size = (float.Parse(command[24]));
 					}
 					if(numPlayers >= 4)
 					{
-						player1ID = (int.Parse(command[25]));
-						player1Name = ((command[26]).ToString());
-						player1X = (float.Parse(command[27]));
-						player1Y = (float.Parse(command[28]));
-						player1Size = (float.Parse(command[29]));
+						player4ID = (int.Parse(command[25]));
+						player4Name = ((command[26]).ToString());
+						player4X = (float.Parse(command[27]));
+						player4Y = (float.Parse(command[28]));
+						player4Size = (float.Parse(command[29]));
 					}
 					settingPlayerSpawn = true;
 					settingPlayerSize = true;
