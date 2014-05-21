@@ -17,6 +17,8 @@ public class NetHandler : MonoBehaviour {
 	private NetworkStream netStream;
 	public Queue<string[]> readQueue;
 
+	private string lastInput;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -38,6 +40,15 @@ public class NetHandler : MonoBehaviour {
 		
 		netStream.Write(byteMessage, 0, byteMessage.Length);
 		netStream.Flush();
+	}
+
+	public void sendInput(string input)
+	{
+		if(input!=lastInput)
+		{
+			lastInput = input;
+			sendString("inputcommand;" + input);
+		}
 	}
 
 	private string encodePassword(string originalName, string originalPass)
@@ -95,10 +106,24 @@ public class NetHandler : MonoBehaviour {
 		}
 	}
 
+	void OnApplicationQuit()
+	{
+		disconnect();
+	}
+
 	private void disconnect()
 	{
 		netStream.Close();
 		client.Close();
+	}
+
+	public void setIP(string IPadd)
+	{
+		thread.Abort();
+		IP = IPadd;
+		client = new TcpClient(IP, port);
+		netStream = client.GetStream();
+		thread.Start();
 	}
 
 	// Update is called once per frame

@@ -42,7 +42,7 @@ public class Wall : MonoBehaviour {
 	{
 		if(col.gameObject.name == "Player(Clone)")
 		{
-			col.gameObject.GetComponent<Player>().respawn();
+			//col.gameObject.GetComponent<Player>().respawn();
 		}
 	}
 }
