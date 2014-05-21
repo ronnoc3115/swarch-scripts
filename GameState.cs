@@ -16,8 +16,6 @@ public class GameState : MonoBehaviour {
 	private UI ui;
 	//number of players in a game
 	private int numPlayers;
-	//currently player being looked at, used in for loops that iterate through all player info
-	private int playerNum;
 	//pellet positions
 	//had to make individual variables to avoid thread colissions
 	private float pellet1X;
@@ -73,7 +71,6 @@ public class GameState : MonoBehaviour {
 		netHandler = gameObject.GetComponent<NetHandler>();
 		ui = gameObject.GetComponent<UI>();
 		numPlayers = 0;
-		playerNum = 0;
 		pellet1X = 0.0f;
 		pellet1Y = 0.0f;
 		pellet2X = 0.0f;
@@ -117,7 +114,7 @@ public class GameState : MonoBehaviour {
 		settingPlayerSize = false;
 		
 		settingUserInfo = false;
-		
+
 		gameStart = false;
 	}
 	
@@ -305,15 +302,15 @@ public class GameState : MonoBehaviour {
 						{
 							player2ID = (int.Parse(command[18]));
 							player2Name = ((command[19]).ToString());
-							//if the ID of player being looked at matches the ID of this client's user, then this is the user's name and ID
+
 							if(int.Parse(command[18])==int.Parse(command[2]))
 							{
-								//send this info to UI for personalization of client aesthetics
+
 								userID = (int.Parse(command[18]));
 								userName = ((command[19]).ToString());
 								settingUserInfo = true;
 							}
-							//set info of player being looked at
+
 							player2X = (float.Parse(command[20]));
 							player2Y = (float.Parse(command[21]));
 							player2Size = (float.Parse(command[22]));
@@ -322,15 +319,15 @@ public class GameState : MonoBehaviour {
 						{
 							player3ID = (int.Parse(command[23]));
 							player3Name = ((command[24]).ToString());
-							//if the ID of player being looked at matches the ID of this client's user, then this is the user's name and ID
+
 							if(int.Parse(command[23])==int.Parse(command[2]))
 							{
-								//send this info to UI for personalization of client aesthetics
+
 								userID = (int.Parse(command[23]));
 								userName = ((command[24]).ToString());
 								settingUserInfo = true;
 							}
-							//set info of player being looked at
+
 							player3X = (float.Parse(command[25]));
 							player3Y = (float.Parse(command[26]));
 							player3Size = (float.Parse(command[27]));
@@ -339,20 +336,20 @@ public class GameState : MonoBehaviour {
 						{
 							player4ID = (int.Parse(command[28]));
 							player4Name = ((command[29]).ToString());
-							//if the ID of player being looked at matches the ID of this client's user, then this is the user's name and ID
+
 							if(int.Parse(command[28])==int.Parse(command[2]))
 							{
-								//send this info to UI for personalization of client aesthetics
+
 								userID = (int.Parse(command[28]));
 								userName = ((command[29]).ToString());
 								settingUserInfo = true;
 							}
-							//set info of player being looked at
+
 							player4X = (float.Parse(command[30]));
 							player4Y = (float.Parse(command[31]));
 							player4Size = (float.Parse(command[32]));
 						}
-						//settingPlayerID = true;
+						settingPlayerID = true;
 						settingPlayerName = true;
 						settingPlayerSpawn = true;
 						settingPlayerSize = true;
