@@ -9,22 +9,25 @@ public class UI : MonoBehaviour {
 	public GameObject player;
 	public GameObject pellet;
 
+	//inputted by user on login
 	private string username;
 	private string password;
-	//private string opponentName;
+	//changing IP dynamically is not currently working
 	private string IP;
+
+	//loging checks and stuff
 	public bool showGUI;
 	private bool gamePlaying;
 	private bool loginSuccessful;
 	private bool newUser;
 	private bool passwordCorrect;
 
+	//this user's name&ID to adjust the WelcomeMessage
+	//and possibly enhance/bold this user's player name and score textbox
 	private string playerName;
 	private int playerID;
-	//private int opponentID;
-	//private int currentScore;
+
 	private int highScore;
-	//private int opponentScore;
 
 	//temp info for what needs to be changed
 	private string nametoChange;
@@ -39,13 +42,9 @@ public class UI : MonoBehaviour {
 		showGUI = true;
 		username = "Username";
 		password = "Password";
-		//opponentName = "";
 		IP = "IP Address";
 		playerID = 0;
-		//opponentID = 0;
-		//currentScore = 0;
 		highScore = 0;
-		//opponentScore = 0;
 		gamePlaying = false;
 		loginSuccessful = false;
 		newUser = false;
@@ -83,12 +82,6 @@ public class UI : MonoBehaviour {
 			GameObject.Find("WelcomeMessage").guiText.text = "Incorrect Password. Please try again.";
 		}
 
-//		if(loginSuccessful)
-//		{
-//			GameObject.Find("OpponentName").guiText.text = "Player " + opponentID + ": " + opponentName;
-//		}
-
-		//GameObject.Find("CurrentScores").guiText.text = "Current Score: " + currentScore + "     Opponent Score: " + opponentScore;
 		GameObject.Find("HighScore").guiText.text = "Your High Score: " + highScore;
 
 		if(idNametoChange != 0)

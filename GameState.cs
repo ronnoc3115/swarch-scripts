@@ -276,6 +276,7 @@ public class GameState : MonoBehaviour {
 					break;
 				}
 			}
+			//so the thread doesn't burn out my comp's CPU
 			Thread.Sleep(100);
 		}
 	}

@@ -45,15 +45,6 @@ public class NetHandler : MonoBehaviour {
 		netStream.Flush();
 	}
 
-	public void sendInput(string input)
-	{
-		if(input!=lastInput)
-		{
-			lastInput = input;
-			sendString("inputcommand;" + input);
-		}
-	}
-
 	private string encodePassword(string originalName, string originalPass)
 	{
 		MD5 hasher = MD5.Create();
@@ -80,6 +71,15 @@ public class NetHandler : MonoBehaviour {
 		sendString("logincommand;" + name + ";" + encodedPass);
 	}
 
+	public void sendInput(string input)
+	{
+		if(input!=lastInput)
+		{
+			lastInput = input;
+			sendString("inputcommand;" + input);
+		}
+	}
+
 	public void sendScore(string name, string pass, int score)
 	{
 
@@ -98,6 +98,7 @@ public class NetHandler : MonoBehaviour {
 				string str = sb.ToString ();
 				string[] stringArray = str.Split(new char[] { ';' });
 
+				//so we can read exactly what the client is reading from the server
 				foreach(string s in stringArray)
 				{
 					Debug.Log(s);
@@ -120,6 +121,8 @@ public class NetHandler : MonoBehaviour {
 		client.Close();
 	}
 
+	//trying to dynamically change IP used for server
+	//NOT CURRENTLY WORKING
 	public void setIP(string IPadd)
 	{
 		thread.Abort();
