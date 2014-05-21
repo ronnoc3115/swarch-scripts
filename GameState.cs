@@ -303,8 +303,8 @@ public class GameState : MonoBehaviour {
 						}
 						if(numPlayers >= 2)
 						{
-							//playerID = (int.Parse(command[13]));
-							player1Name = ((command[19]).ToString());
+							//playerID = (int.Parse(command[18]));
+							player2Name = ((command[19]).ToString());
 							//if the ID of player being looked at matches the ID of this client's user, then this is the user's name and ID
 							if(int.Parse(command[18])==int.Parse(command[2]))
 							{
@@ -314,9 +314,43 @@ public class GameState : MonoBehaviour {
 								settingUserInfo = true;
 							}
 							//set info of player being looked at
-							player1X = (float.Parse(command[20]));
-							player1Y = (float.Parse(command[21]));
-							player1Size = (float.Parse(command[22]));
+							player2X = (float.Parse(command[20]));
+							player2Y = (float.Parse(command[21]));
+							player2Size = (float.Parse(command[22]));
+						}
+						if(numPlayers >= 3)
+						{
+							//playerID = (int.Parse(command[23]));
+							player2Name = ((command[24]).ToString());
+							//if the ID of player being looked at matches the ID of this client's user, then this is the user's name and ID
+							if(int.Parse(command[23])==int.Parse(command[2]))
+							{
+								//send this info to UI for personalization of client aesthetics
+								userID = (int.Parse(command[23]));
+								userName = ((command[24]).ToString());
+								settingUserInfo = true;
+							}
+							//set info of player being looked at
+							player2X = (float.Parse(command[25]));
+							player2Y = (float.Parse(command[26]));
+							player2Size = (float.Parse(command[27]));
+						}
+						if(numPlayers >= 4)
+						{
+							//playerID = (int.Parse(command[28]));
+							player2Name = ((command[29]).ToString());
+							//if the ID of player being looked at matches the ID of this client's user, then this is the user's name and ID
+							if(int.Parse(command[28])==int.Parse(command[2]))
+							{
+								//send this info to UI for personalization of client aesthetics
+								userID = (int.Parse(command[28]));
+								userName = ((command[29]).ToString());
+								settingUserInfo = true;
+							}
+							//set info of player being looked at
+							player2X = (float.Parse(command[30]));
+							player2Y = (float.Parse(command[31]));
+							player2Size = (float.Parse(command[32]));
 						}
 						//settingPlayerID = true;
 						settingPlayerName = true;
@@ -353,6 +387,22 @@ public class GameState : MonoBehaviour {
 						player1X = (float.Parse(command[17]));
 						player1Y = (float.Parse(command[18]));
 						player1Size = (float.Parse(command[19]));
+					}
+					if(numPlayers >= 3)
+					{
+						player1ID = (int.Parse(command[20]));
+						player1Name = ((command[21]).ToString());
+						player1X = (float.Parse(command[22]));
+						player1Y = (float.Parse(command[23]));
+						player1Size = (float.Parse(command[24]));
+					}
+					if(numPlayers >= 4)
+					{
+						player1ID = (int.Parse(command[25]));
+						player1Name = ((command[26]).ToString());
+						player1X = (float.Parse(command[27]));
+						player1Y = (float.Parse(command[28]));
+						player1Size = (float.Parse(command[29]));
 					}
 					settingPlayerSpawn = true;
 					settingPlayerSize = true;
