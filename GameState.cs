@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿//Connor Richards	54689185
+//Jonathan Stevens	61356189
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -255,9 +258,11 @@ public class GameState : MonoBehaviour {
 					for(int i = 0; i < numPlayers; i++)
 					{
 						playerNum = i+1;
-						playerX = (float.Parse(command[10+i]));
-						playerY = (float.Parse(command[11+i]));
-						playerSize = (float.Parse(command[12+i]));
+						playerID = (int.Parse(command[10+i]));
+						//playerName = ((command[11+i]).ToString());
+						playerX = (float.Parse(command[12+i]));
+						playerY = (float.Parse(command[13+i]));
+						playerSize = (float.Parse(command[14+i]));
 						settingPlayerSpawn = true;
 						settingPlayerSize = true;
 					}

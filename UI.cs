@@ -1,5 +1,5 @@
 ﻿//Connor Richards	54689185
-//Jonathan Stevens	61356189 - Hello git!
+//Jonathan Stevens	61356189
 
 using UnityEngine;
 using System.Collections;
