@@ -37,12 +37,4 @@ public class Wall : MonoBehaviour {
 	void Update () {
 	
 	}
-
-	void OnCollisionEnter2D(Collision2D col)
-	{
-		if(col.gameObject.name == "Player(Clone)")
-		{
-			//col.gameObject.GetComponent<Player>().respawn();
-		}
-	}
 }

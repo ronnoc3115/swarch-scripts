@@ -79,7 +79,7 @@ public class Player : MonoBehaviour {
 	//called by gamestate on updates
 	public void respawn(float respawnX, float respawnY)
 	{
-		//fancy math to adjust proportions properly
+		//fancy math to adjust proportions of position properly
 		float newRespawnX = (((GameObject.Find("Arena").transform.renderer.bounds.size.x)*respawnX/120) - ((GameObject.Find("Arena").transform.renderer.bounds.size.x)/2));
 		float newRespawnY = (((GameObject.Find("Arena").transform.renderer.bounds.size.y)*respawnY/100) - ((GameObject.Find("Arena").transform.renderer.bounds.size.y)/2));
 		transform.position = new Vector2 (newRespawnX, newRespawnY);
