@@ -194,14 +194,26 @@ public class GameState : MonoBehaviour {
 	private void setPlayerName()
 	{
 		//set name on UI
-		GameObject.Find("Game Logic").GetComponent<UI>().setNametoChange(player1Name);
-		GameObject.Find("Game Logic").GetComponent<UI>().setIDNametoChange(player1ID);
-		GameObject.Find("Game Logic").GetComponent<UI>().setNametoChange(player2Name);
-		GameObject.Find("Game Logic").GetComponent<UI>().setIDNametoChange(player2ID);
-		GameObject.Find("Game Logic").GetComponent<UI>().setNametoChange(player3Name);
-		GameObject.Find("Game Logic").GetComponent<UI>().setIDNametoChange(player3ID);
-		GameObject.Find("Game Logic").GetComponent<UI>().setNametoChange(player4Name);
-		GameObject.Find("Game Logic").GetComponent<UI>().setIDNametoChange(player4ID);
+		if(GameObject.Find("Player1")!=null)
+		{
+			GameObject.Find("Game Logic").GetComponent<UI>().setNametoChange(player1Name);
+			GameObject.Find("Game Logic").GetComponent<UI>().setIDNametoChange(player1ID);
+		}
+		if(GameObject.Find("Player2")!=null)
+		{
+			GameObject.Find("Game Logic").GetComponent<UI>().setNametoChange(player2Name);
+			GameObject.Find("Game Logic").GetComponent<UI>().setIDNametoChange(player2ID);
+		}
+		if(GameObject.Find("Player3")!=null)
+		{
+			GameObject.Find("Game Logic").GetComponent<UI>().setNametoChange(player3Name);
+			GameObject.Find("Game Logic").GetComponent<UI>().setIDNametoChange(player3ID);
+		}
+		if(GameObject.Find("Player4")!=null)
+		{
+			GameObject.Find("Game Logic").GetComponent<UI>().setNametoChange(player4Name);
+			GameObject.Find("Game Logic").GetComponent<UI>().setIDNametoChange(player4ID);
+		}
 		settingPlayerName = false;
 	}
 	
