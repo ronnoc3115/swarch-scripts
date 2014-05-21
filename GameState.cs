@@ -64,7 +64,9 @@ public class GameState : MonoBehaviour {
 	private bool settingUserInfo;
 	//instantiate pellets and players
 	private bool gameStart;
-	
+
+	private GameObject[] players;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -116,6 +118,8 @@ public class GameState : MonoBehaviour {
 		settingUserInfo = false;
 
 		gameStart = false;
+
+		players = new GameObject[4];
 	}
 	
 	// Update is called once per frame
@@ -129,6 +133,7 @@ public class GameState : MonoBehaviour {
 				GameObject newPlayer = (GameObject)Instantiate(player);
 				//each player gets their ID on their name
 				newPlayer.name = ("Player" + (i+1));
+				players[i] = newPlayer;
 				//newPlayer.GetComponent<Player>().setID(i+1);
 			}
 			//create 4 pellets
@@ -220,15 +225,20 @@ public class GameState : MonoBehaviour {
 	//bad name. only sets position
 	private void setPlayerSpawn()
 	{
-		if(GameObject.Find("Player1")!=null)
-			GameObject.Find("Player1").GetComponent<Player>().respawn(player1X, player1Y);
-		if(GameObject.Find("Player2")!=null)
-			GameObject.Find("Player2").GetComponent<Player>().respawn(player2X, player2Y);
-		if(GameObject.Find("Player3")!=null)
-			GameObject.Find("Player3").GetComponent<Player>().respawn(player3X, player3Y);
-		if(GameObject.Find("Player4")!=null)
-			GameObject.Find("Player4").GetComponent<Player>().respawn(player4X, player4Y);
-		settingPlayerSpawn = false;
+
+		//if(players[0]!=null)
+			players[0].GetComponent<Player>().respawn(player1X, player1Y);
+			//GameObject.Find("Player1").GetComponent<Player>().respawn(player1X, player1Y);
+		//if(players[1]!=null)
+			players[1].GetComponent<Player>().respawn(player2X, player2Y);
+			//GameObject.Find("Player2").GetComponent<Player>().respawn(player2X, player2Y);
+		//if(players[2]!=null)
+			players[2].GetComponent<Player>().respawn(player3X, player3Y);
+			//GameObject.Find("Player3").GetComponent<Player>().respawn(player3X, player3Y);
+		//if(players[3]!=null)
+			players[3].GetComponent<Player>().respawn(player4X, player4Y);
+			//GameObject.Find("Player4").GetComponent<Player>().respawn(player4X, player4Y);
+		//settingPlayerSpawn = false;
 	}
 	
 	private void setPlayerSize()
@@ -256,10 +266,12 @@ public class GameState : MonoBehaviour {
 	{
 		while(true)
 		{
+			Debug.Log("eh?");
 			//read from queue when there are things to be read
 			if(netHandler.readQueue.Count > 0)
 			{
 				string[] command = netHandler.readQueue.Dequeue();
+				Debug.Log(command[0].Equals("turn") + " " + command[0] + " " + "turn");
 				
 				//command statements based on first command
 				switch(command[0])
@@ -281,6 +293,7 @@ public class GameState : MonoBehaviour {
 					{
 						//# of players server said are connected
 						numPlayers = (int.Parse(command[12]));
+						players = new GameObject[numPlayers];
 						gameStart = true;
 						//set pellet positions
 						pellet1X = (float.Parse(command[4]));
@@ -363,12 +376,16 @@ public class GameState : MonoBehaviour {
 						}
 						settingPlayerID = true;
 						settingPlayerName = true;
-						settingPlayerSpawn = true;
+						//settingPlayerSpawn = true;
+						setPlayerSpawn();
 						settingPlayerSize = true;
 					}
 					break;
 					//sent constantly by server to keep client on track
+					//NOT ANYMORE CUZ THIS SUCKS
 				case "gamestate":
+					
+					Debug.Log("HI THERE");
 					//timestamp needed here
 					pellet1X = (float.Parse(command[1]));
 					pellet1Y = (float.Parse(command[2]));
@@ -413,19 +430,43 @@ public class GameState : MonoBehaviour {
 						player4Y = (float.Parse(command[28]));
 						player4Size = (float.Parse(command[29]));
 					}
-					settingPlayerSpawn = true;
+					//settingPlayerSpawn = true;
+					setPlayerSpawn();
 					settingPlayerSize = true;
+					break;
+					//sent when a player sends out an input
+				case "turn":
+					//timestamp
+					numPlayers = (int.Parse(command[1]));
+					Debug.Log("YOoooooooooo");
+					for(int i = 0; i < numPlayers; i++)
+					{
+						switch(command[2 + i])
+						{
+						case "UP":
+							players[i].GetComponent<Player>().up();
+							break;
+						case "DOWN":
+							players[i].GetComponent<Player>().down();
+							break;
+						case "LEFT":
+							players[i].GetComponent<Player>().left();
+							break;
+						case "RIGHT":
+							players[i].GetComponent<Player>().right();
+							break;
+						}
+					}
 					break;
 				case "updateScore":
 					//timestamp needed here
 					//player ID (belongs to whose score is being updated)
 					//new score
 					break;
-				default:
-					break;
 				}
 			}
 			Thread.Sleep(100);
+			Debug.Log("meh.");
 		}
 	}
 }
