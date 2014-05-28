@@ -230,25 +230,25 @@ public class GameState : MonoBehaviour {
 	private void setPlayerName()
 	{
 		//set name on UI
-		if(GameObject.Find("Player1")!=null)
+		if(numPlayers >= 1)
 		{
 			players[0] = GameObject.Find("Player1");
 			GameObject.Find("Game Logic").GetComponent<UI>().setNametoChange(player1Name);
 			GameObject.Find("Game Logic").GetComponent<UI>().setIDNametoChange(player1ID);
 		}
-		if(GameObject.Find("Player2")!=null)
+		if(numPlayers >= 2)
 		{
 			players[1] = GameObject.Find("Player2");
 			GameObject.Find("Game Logic").GetComponent<UI>().setNametoChange(player2Name);
 			GameObject.Find("Game Logic").GetComponent<UI>().setIDNametoChange(player2ID);
 		}
-		if(GameObject.Find("Player3")!=null)
+		if(numPlayers >= 3)
 		{
 			players[2] = GameObject.Find("Player3");
 			GameObject.Find("Game Logic").GetComponent<UI>().setNametoChange(player3Name);
 			GameObject.Find("Game Logic").GetComponent<UI>().setIDNametoChange(player3ID);
 		}
-		if(GameObject.Find("Player4")!=null)
+		if(numPlayers >= 4)
 		{
 			players[3] = GameObject.Find("Player4");
 			GameObject.Find("Game Logic").GetComponent<UI>().setNametoChange(player4Name);
