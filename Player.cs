@@ -110,14 +110,13 @@ public class Player : MonoBehaviour {
 	//called by gamestate on updates
 	public void respawn(float respawnX, float respawnY)
 	{
-		Debug.Log("B");
 		gameObject.GetComponent<SpriteRenderer>().enabled = true;
 		//fancy math to adjust proportions of position properly
 		float newRespawnX = ((arenaBoundsX*respawnX/120) - (arenaBoundsX/2));
 		float newRespawnY = ((arenaBoundsY*respawnY/100) - (arenaBoundsY/2));
 		transform.position = new Vector2 (newRespawnX, newRespawnY);
 
-		Debug.Log("Moving to " + newRespawnX + " " + newRespawnY);
+		//Debug.Log("Moving to " + newRespawnX + " " + newRespawnY);
 		//I think this is unnecessary, but leaving it commented out until we know for sure it can be deleted
 		//transform.localScale = new Vector2(6.0f, 6.0f);
 		//speed = startSpeed;

@@ -49,8 +49,10 @@ public class GameState : MonoBehaviour {
 	private string player4Name;
 	private float player4Size;
 
-	//ID of the player that is changing directions
+	//info of the player that is changing directions
 	private int turningPlayerID;
+	private float turningPlayerX;
+	private float turningPlayerY;
 	
 	//info on client's user info
 	//used to give UI info to display, and change colors appropriately
@@ -110,6 +112,8 @@ public class GameState : MonoBehaviour {
 		player4Size = 1;
 
 		turningPlayerID = 0;
+		turningPlayerX = 0.0f;
+		turningPlayerY = 0.0f;
 		
 		userID = 0;
 		userName = "";
@@ -190,19 +194,19 @@ public class GameState : MonoBehaviour {
 
 		if(turningPlayerUp)
 		{
-			turnPlayerUp(turningPlayerID);
+			turnPlayerUp(turningPlayerID, turningPlayerX, turningPlayerY);
 		}
 		if(turningPlayerDown)
 		{
-			turnPlayerDown(turningPlayerID);	
+			turnPlayerDown(turningPlayerID, turningPlayerX, turningPlayerY);	
 		}
 		if(turningPlayerLeft)
 		{
-			turnPlayerLeft(turningPlayerID);
+			turnPlayerLeft(turningPlayerID, turningPlayerX, turningPlayerY);
 		}
 		if(turningPlayerRight)
 		{
-			turnPlayerRight(turningPlayerID);
+			turnPlayerRight(turningPlayerID, turningPlayerX, turningPlayerY);
 		}
 	}
 	
@@ -228,21 +232,25 @@ public class GameState : MonoBehaviour {
 		//set name on UI
 		if(GameObject.Find("Player1")!=null)
 		{
+			players[0] = GameObject.Find("Player1");
 			GameObject.Find("Game Logic").GetComponent<UI>().setNametoChange(player1Name);
 			GameObject.Find("Game Logic").GetComponent<UI>().setIDNametoChange(player1ID);
 		}
 		if(GameObject.Find("Player2")!=null)
 		{
+			players[1] = GameObject.Find("Player2");
 			GameObject.Find("Game Logic").GetComponent<UI>().setNametoChange(player2Name);
 			GameObject.Find("Game Logic").GetComponent<UI>().setIDNametoChange(player2ID);
 		}
 		if(GameObject.Find("Player3")!=null)
 		{
+			players[2] = GameObject.Find("Player3");
 			GameObject.Find("Game Logic").GetComponent<UI>().setNametoChange(player3Name);
 			GameObject.Find("Game Logic").GetComponent<UI>().setIDNametoChange(player3ID);
 		}
 		if(GameObject.Find("Player4")!=null)
 		{
+			players[3] = GameObject.Find("Player4");
 			GameObject.Find("Game Logic").GetComponent<UI>().setNametoChange(player4Name);
 			GameObject.Find("Game Logic").GetComponent<UI>().setIDNametoChange(player4ID);
 		}
@@ -254,25 +262,21 @@ public class GameState : MonoBehaviour {
 	{
 		if(numPlayers >= 1)
 		{
-			players[0] = GameObject.Find("Player1");
 			players[0].GetComponent<Player>().respawn(player1X, player1Y);
 			//GameObject.Find("Player1").GetComponent<Player>().respawn(player1X, player1Y);
 		}
 		if(numPlayers >= 2)
 		{
-			players[1] = GameObject.Find("Player2");
 			players[1].GetComponent<Player>().respawn(player2X, player2Y);
 			//GameObject.Find("Player2").GetComponent<Player>().respawn(player2X, player2Y);
 		}
 		if(numPlayers >= 3)
 		{
-			players[2] = GameObject.Find("Player3");
 			players[2].GetComponent<Player>().respawn(player3X, player3Y);
 			//GameObject.Find("Player3").GetComponent<Player>().respawn(player3X, player3Y);
 		}
 		if(numPlayers >= 4)
 		{
-			players[3] = GameObject.Find("Player4");
 			players[3].GetComponent<Player>().respawn(player4X, player4Y);
 			//GameObject.Find("Player4").GetComponent<Player>().respawn(player4X, player4Y);
 		}
@@ -300,24 +304,28 @@ public class GameState : MonoBehaviour {
 		settingUserInfo = false;
 	}
 
-	private void turnPlayerUp(int playerToTurn)
+	private void turnPlayerUp(int playerToTurn, float playerToTurnX, float playerToTurnY)
 	{
 		players[playerToTurn-1].GetComponent<Player>().up();
+		players[playerToTurn-1].GetComponent<Player>().respawn(playerToTurnX, playerToTurnY);
 		turningPlayerUp = false;
 	}
-	private void turnPlayerDown(int playerToTurn)
+	private void turnPlayerDown(int playerToTurn, float playerToTurnX, float playerToTurnY)
 	{
 		players[playerToTurn-1].GetComponent<Player>().down();
+		players[playerToTurn-1].GetComponent<Player>().respawn(playerToTurnX, playerToTurnY);
 		turningPlayerDown = false;
 	}
-	private void turnPlayerLeft(int playerToTurn)
+	private void turnPlayerLeft(int playerToTurn, float playerToTurnX, float playerToTurnY)
 	{
 		players[playerToTurn-1].GetComponent<Player>().left();
+		players[playerToTurn-1].GetComponent<Player>().respawn(playerToTurnX, playerToTurnY);
 		turningPlayerLeft = false;
 	}
-	private void turnPlayerRight(int playerToTurn)
+	private void turnPlayerRight(int playerToTurn, float playerToTurnX, float playerToTurnY)
 	{
 		players[playerToTurn-1].GetComponent<Player>().right();
+		players[playerToTurn-1].GetComponent<Player>().respawn(playerToTurnX, playerToTurnY);
 		turningPlayerRight = false;
 	}
 
@@ -493,6 +501,8 @@ public class GameState : MonoBehaviour {
 				case "turn":
 					//timestamp
 					turningPlayerID = (int.Parse(command[1]));
+					turningPlayerX = (float.Parse(command[3]));
+					turningPlayerY = (float.Parse(command[4]));
 					switch(command[2])
 					{
 					case "UP":
