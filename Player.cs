@@ -110,6 +110,8 @@ public class Player : MonoBehaviour {
 	//called by gamestate on updates
 	public void respawn(float respawnX, float respawnY)
 	{
+		Debug.Log("B");
+		gameObject.GetComponent<SpriteRenderer>().enabled = true;
 		//fancy math to adjust proportions of position properly
 		float newRespawnX = ((arenaBoundsX*respawnX/120) - (arenaBoundsX/2));
 		float newRespawnY = ((arenaBoundsY*respawnY/100) - (arenaBoundsY/2));

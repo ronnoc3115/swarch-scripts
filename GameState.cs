@@ -48,6 +48,9 @@ public class GameState : MonoBehaviour {
 	private int player4ID;
 	private string player4Name;
 	private float player4Size;
+
+	//ID of the player that is changing directions
+	private int turningPlayerID;
 	
 	//info on client's user info
 	//used to give UI info to display, and change colors appropriately
@@ -59,13 +62,16 @@ public class GameState : MonoBehaviour {
 	private bool settingPlayerName;
 	private bool settingPelletSpawn;
 	private bool settingPlayerSpawn;
-	private bool settingPlayerSize;
-	
+	private bool settingPlayerSize;	
 	private bool settingUserInfo;
+	private bool turningPlayerUp;
+	private bool turningPlayerDown;
+	private bool turningPlayerLeft;
+	private bool turningPlayerRight;
 	//instantiate pellets and players
 	private bool gameStart;
 
-	private GameObject[] players;
+	public GameObject[] players = new GameObject[4];
 
 	// Use this for initialization
 	void Start () {
@@ -102,6 +108,8 @@ public class GameState : MonoBehaviour {
 		player4ID = 0;
 		player4Name = "";
 		player4Size = 1;
+
+		turningPlayerID = 0;
 		
 		userID = 0;
 		userName = "";
@@ -114,12 +122,14 @@ public class GameState : MonoBehaviour {
 		settingPelletSpawn = false;
 		settingPlayerSpawn = false;
 		settingPlayerSize = false;
+		turningPlayerUp = false;
+		turningPlayerDown = false;
+		turningPlayerLeft = false;
+		turningPlayerRight = false;
 		
 		settingUserInfo = false;
 
 		gameStart = false;
-
-		players = new GameObject[4];
 	}
 	
 	// Update is called once per frame
@@ -128,14 +138,14 @@ public class GameState : MonoBehaviour {
 		if(gameStart)
 		{
 			//create as many players as the server says are connected
-			for(int i = 0; i < numPlayers; i++)
-			{
-				GameObject newPlayer = (GameObject)Instantiate(player);
-				//each player gets their ID on their name
-				newPlayer.name = ("Player" + (i+1));
-				players[i] = newPlayer;
-				//newPlayer.GetComponent<Player>().setID(i+1);
-			}
+//			for(int i = 0; i < numPlayers; i++)
+//			{
+//				GameObject newPlayer = (GameObject)Instantiate(player);
+//				//each player gets their ID on their name
+//				newPlayer.name = ("Player" + (i+1));
+//				players[i] = newPlayer;
+//				//newPlayer.GetComponent<Player>().setID(i+1);
+//			}
 			//create 4 pellets
 			for(int i = 0; i < 4; i++)
 			{
@@ -176,6 +186,23 @@ public class GameState : MonoBehaviour {
 		if(settingUserInfo)
 		{
 			setUserInfo();
+		}
+
+		if(turningPlayerUp)
+		{
+			turnPlayerUp(turningPlayerID);
+		}
+		if(turningPlayerDown)
+		{
+			turnPlayerDown(turningPlayerID);	
+		}
+		if(turningPlayerLeft)
+		{
+			turnPlayerLeft(turningPlayerID);
+		}
+		if(turningPlayerRight)
+		{
+			turnPlayerRight(turningPlayerID);
 		}
 	}
 	
@@ -225,31 +252,42 @@ public class GameState : MonoBehaviour {
 	//bad name. only sets position
 	private void setPlayerSpawn()
 	{
-
-		//if(players[0]!=null)
+		if(numPlayers >= 1)
+		{
+			players[0] = GameObject.Find("Player1");
 			players[0].GetComponent<Player>().respawn(player1X, player1Y);
 			//GameObject.Find("Player1").GetComponent<Player>().respawn(player1X, player1Y);
-		//if(players[1]!=null)
+		}
+		if(numPlayers >= 2)
+		{
+			players[1] = GameObject.Find("Player2");
 			players[1].GetComponent<Player>().respawn(player2X, player2Y);
 			//GameObject.Find("Player2").GetComponent<Player>().respawn(player2X, player2Y);
-		//if(players[2]!=null)
+		}
+		if(numPlayers >= 3)
+		{
+			players[2] = GameObject.Find("Player3");
 			players[2].GetComponent<Player>().respawn(player3X, player3Y);
 			//GameObject.Find("Player3").GetComponent<Player>().respawn(player3X, player3Y);
-		//if(players[3]!=null)
+		}
+		if(numPlayers >= 4)
+		{
+			players[3] = GameObject.Find("Player4");
 			players[3].GetComponent<Player>().respawn(player4X, player4Y);
 			//GameObject.Find("Player4").GetComponent<Player>().respawn(player4X, player4Y);
-		//settingPlayerSpawn = false;
+		}
+		settingPlayerSpawn = false;
 	}
 	
 	private void setPlayerSize()
 	{
-		if(GameObject.Find("Player1")!=null)
+		if(numPlayers >= 1)
 			GameObject.Find("Player1").GetComponent<Player>().changeSize(player1Size);
-		if(GameObject.Find("Player2")!=null)
+		if(numPlayers >= 2)
 			GameObject.Find("Player2").GetComponent<Player>().changeSize(player2Size);
-		if(GameObject.Find("Player3")!=null)
+		if(numPlayers >= 3)
 			GameObject.Find("Player3").GetComponent<Player>().changeSize(player3Size);
-		if(GameObject.Find("Player4")!=null)
+		if(numPlayers >= 4)
 			GameObject.Find("Player4").GetComponent<Player>().changeSize(player4Size);
 		settingPlayerSize = false;
 	}
@@ -261,17 +299,36 @@ public class GameState : MonoBehaviour {
 		GameObject.Find("Game Logic").GetComponent<UI>().setPlayerName(userName);
 		settingUserInfo = false;
 	}
-	
+
+	private void turnPlayerUp(int playerToTurn)
+	{
+		players[playerToTurn-1].GetComponent<Player>().up();
+		turningPlayerUp = false;
+	}
+	private void turnPlayerDown(int playerToTurn)
+	{
+		players[playerToTurn-1].GetComponent<Player>().down();
+		turningPlayerDown = false;
+	}
+	private void turnPlayerLeft(int playerToTurn)
+	{
+		players[playerToTurn-1].GetComponent<Player>().left();
+		turningPlayerLeft = false;
+	}
+	private void turnPlayerRight(int playerToTurn)
+	{
+		players[playerToTurn-1].GetComponent<Player>().right();
+		turningPlayerRight = false;
+	}
+
 	private void readFromQueue()
 	{
 		while(true)
 		{
-			Debug.Log("eh?");
 			//read from queue when there are things to be read
 			if(netHandler.readQueue.Count > 0)
 			{
 				string[] command = netHandler.readQueue.Dequeue();
-				Debug.Log(command[0].Equals("turn") + " " + command[0] + " " + "turn");
 				
 				//command statements based on first command
 				switch(command[0])
@@ -376,8 +433,7 @@ public class GameState : MonoBehaviour {
 						}
 						settingPlayerID = true;
 						settingPlayerName = true;
-						//settingPlayerSpawn = true;
-						setPlayerSpawn();
+						settingPlayerSpawn = true;
 						settingPlayerSize = true;
 					}
 					break;
@@ -430,32 +486,27 @@ public class GameState : MonoBehaviour {
 						player4Y = (float.Parse(command[28]));
 						player4Size = (float.Parse(command[29]));
 					}
-					//settingPlayerSpawn = true;
-					setPlayerSpawn();
+					settingPlayerSpawn = true;
 					settingPlayerSize = true;
 					break;
 					//sent when a player sends out an input
 				case "turn":
 					//timestamp
-					numPlayers = (int.Parse(command[1]));
-					Debug.Log("YOoooooooooo");
-					for(int i = 0; i < numPlayers; i++)
+					turningPlayerID = (int.Parse(command[1]));
+					switch(command[2])
 					{
-						switch(command[2 + i])
-						{
-						case "UP":
-							players[i].GetComponent<Player>().up();
-							break;
-						case "DOWN":
-							players[i].GetComponent<Player>().down();
-							break;
-						case "LEFT":
-							players[i].GetComponent<Player>().left();
-							break;
-						case "RIGHT":
-							players[i].GetComponent<Player>().right();
-							break;
-						}
+					case "UP":
+						turningPlayerUp = true;
+						break;
+					case "DOWN":
+						turningPlayerDown = true;
+						break;
+					case "LEFT":
+						turningPlayerLeft = true;
+						break;
+					case "RIGHT":
+						turningPlayerRight = true;
+						break;
 					}
 					break;
 				case "updateScore":
@@ -466,7 +517,11 @@ public class GameState : MonoBehaviour {
 				}
 			}
 			Thread.Sleep(100);
-			Debug.Log("meh.");
 		}
+	}
+
+	void OnApplicationQuit()
+	{
+		queueThread.Abort();
 	}
 }
