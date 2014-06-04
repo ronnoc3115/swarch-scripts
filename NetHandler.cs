@@ -25,7 +25,7 @@ public class NetHandler : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 	
-		IP = "128.195.21.123";
+		IP = "169.234.35.4";
 		port = 8888;
 		//socket = new Socket();
 		thread = new Thread(new ThreadStart(updateClient));
@@ -106,7 +106,7 @@ public class NetHandler : MonoBehaviour {
 
 				readQueue.Enqueue(stringArray);
 			}
-			Thread.Sleep(100);
+			Thread.Sleep(20);
 		}
 	}
 

@@ -60,10 +60,10 @@ public class UI : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
-//		if(currentScore > highScore)
-//		{
-//			highScore = currentScore;
-//		}
+		if((playerID == idScoretoChange) && (scoretoChange > highScore))
+		{
+			highScore = scoretoChange;
+		}
 
 		//add a little message at the center of the screen
 		//adjust slightly if the user is a new account or not
@@ -92,7 +92,7 @@ public class UI : MonoBehaviour {
 
 		//change name and ID displayed in corresponding player# textbox
 		//variables are changed by gamestate updates
-		//ONLY PLAYER1 STUF IS CHANGING RIGHT NOW
+		//ONLY PLAYER1 STUFF IS CHANGING RIGHT NOW
 		if(idNametoChange != 0)
 		{
 			GameObject.Find("Player" + idNametoChange + "Name").guiText.text = "Player" + idNametoChange + ": " + nametoChange;
@@ -136,11 +136,11 @@ public class UI : MonoBehaviour {
 
 		//dynamically change IP connection to server
 		//NOT CURRENTLY WORKING
-		IP = GUI.TextField(new Rect(Screen.width / 2 - 100, Screen.height - 50, 200, 20), IP);
-		if (GUI.Button(new Rect(Screen.width / 2 - 35, Screen.height - 20, 80, 20), "Change IP"))
-		{
-			gameObject.GetComponent<NetHandler>().setIP(IP);
-		}
+//		IP = GUI.TextField(new Rect(Screen.width / 2 - 100, Screen.height - 50, 200, 20), IP);
+//		if (GUI.Button(new Rect(Screen.width / 2 - 35, Screen.height - 20, 80, 20), "Change IP"))
+//		{
+//			gameObject.GetComponent<NetHandler>().setIP(IP);
+//		}
 
 		//closes app window
 		//only works on fully built versions

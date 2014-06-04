@@ -18,48 +18,48 @@ public class GameState : MonoBehaviour {
 	private int numPlayers;
 	//pellet positions
 	//had to make individual variables to avoid thread colissions
-	private float pellet1X;
-	private float pellet1Y;
-	private float pellet2X;
-	private float pellet2Y;
-	private float pellet3X;
-	private float pellet3Y;
-	private float pellet4X;
-	private float pellet4Y;
+	private float pellet1X, pellet1Y;
+	private float pellet2X, pellet2Y;
+	private float pellet3X, pellet3Y;
+	private float pellet4X, pellet4Y;
 	//player positions
 	//had to make individual variables to avoid thread colissions
-	private float player1X;
-	private float player1Y;
+	private float player1X, player1Y;
 	private int player1ID;
 	private string player1Name;
 	private float player1Size;
-	private float player2X;
-	private float player2Y;
+	private float player2X, player2Y;
 	private int player2ID;
 	private string player2Name;
 	private float player2Size;
-	private float player3X;
-	private float player3Y;
+	private float player3X, player3Y;
 	private int player3ID;
 	private string player3Name;
 	private float player3Size;
-	private float player4X;
-	private float player4Y;
+	private float player4X, player4Y;
 	private int player4ID;
 	private string player4Name;
 	private float player4Size;
 
 	//info of the player that is changing directions
 	private int turningPlayerID;
-	private float turningPlayerX;
-	private float turningPlayerY;
-	
+	private float turningPlayerX, turningPlayerY;
+
+	//info of dead player that needs to respawn
+	private int respawningPlayerID;
+	private float respawningPlayerX, respawningPlayerY;
+
+	//info of the player that is eating
+	private int playerEatingID;
+	private int playerEatingNewLevel;
+	private int playerEatingNewScore;
+
 	//info on client's user info
 	//used to give UI info to display, and change colors appropriately
 	private int userID;
 	private string userName;
 	//bools to start set methods in update
-	//not able to call GameObject.Find() inside side thread, so these are necessary
+	//not able to call GameObject.Find() outside of main thread, so these are necessary
 	private bool settingPlayerID;
 	private bool settingPlayerName;
 	private bool settingPelletSpawn;
@@ -70,6 +70,8 @@ public class GameState : MonoBehaviour {
 	private bool turningPlayerDown;
 	private bool turningPlayerLeft;
 	private bool turningPlayerRight;
+	private bool respawningPlayer;
+	private bool playerEating;
 	//instantiate pellets and players
 	private bool gameStart;
 
@@ -114,7 +116,15 @@ public class GameState : MonoBehaviour {
 		turningPlayerID = 0;
 		turningPlayerX = 0.0f;
 		turningPlayerY = 0.0f;
-		
+
+		respawningPlayerID = 0;
+		respawningPlayerX = 0.0f;
+		respawningPlayerY = 0.0f;
+
+		playerEatingID = 0;
+		playerEatingNewLevel = 1;
+		playerEatingNewScore = 0;
+
 		userID = 0;
 		userName = "";
 		
@@ -130,6 +140,8 @@ public class GameState : MonoBehaviour {
 		turningPlayerDown = false;
 		turningPlayerLeft = false;
 		turningPlayerRight = false;
+		respawningPlayer = false;
+		playerEating = false;
 		
 		settingUserInfo = false;
 
@@ -207,6 +219,16 @@ public class GameState : MonoBehaviour {
 		if(turningPlayerRight)
 		{
 			turnPlayerRight(turningPlayerID, turningPlayerX, turningPlayerY);
+		}
+
+		if(respawningPlayer)
+		{
+			respawnPlayer(respawningPlayerID, respawningPlayerX, respawningPlayerY);
+		}
+
+		if(playerEating)
+		{
+			playerEat(playerEatingID, playerEatingNewLevel, playerEatingNewScore);
 		}
 	}
 	
@@ -307,26 +329,42 @@ public class GameState : MonoBehaviour {
 	private void turnPlayerUp(int playerToTurn, float playerToTurnX, float playerToTurnY)
 	{
 		players[playerToTurn-1].GetComponent<Player>().up();
-		players[playerToTurn-1].GetComponent<Player>().respawn(playerToTurnX, playerToTurnY);
+		players[playerToTurn-1].GetComponent<Player>().setPosition(playerToTurnX, playerToTurnY);
 		turningPlayerUp = false;
 	}
 	private void turnPlayerDown(int playerToTurn, float playerToTurnX, float playerToTurnY)
 	{
 		players[playerToTurn-1].GetComponent<Player>().down();
-		players[playerToTurn-1].GetComponent<Player>().respawn(playerToTurnX, playerToTurnY);
+		players[playerToTurn-1].GetComponent<Player>().setPosition(playerToTurnX, playerToTurnY);
 		turningPlayerDown = false;
 	}
 	private void turnPlayerLeft(int playerToTurn, float playerToTurnX, float playerToTurnY)
 	{
 		players[playerToTurn-1].GetComponent<Player>().left();
-		players[playerToTurn-1].GetComponent<Player>().respawn(playerToTurnX, playerToTurnY);
+		players[playerToTurn-1].GetComponent<Player>().setPosition(playerToTurnX, playerToTurnY);
 		turningPlayerLeft = false;
 	}
 	private void turnPlayerRight(int playerToTurn, float playerToTurnX, float playerToTurnY)
 	{
 		players[playerToTurn-1].GetComponent<Player>().right();
-		players[playerToTurn-1].GetComponent<Player>().respawn(playerToTurnX, playerToTurnY);
+		players[playerToTurn-1].GetComponent<Player>().setPosition(playerToTurnX, playerToTurnY);
 		turningPlayerRight = false;
+	}
+
+	private void respawnPlayer(int playerToRespawn, float playerToRespawnX, float playerToRespawnY)
+	{
+		players[playerToRespawn-1].GetComponent<Player>().respawn(playerToRespawnX, playerToRespawnY);
+		GameObject.Find("Game Logic").GetComponent<UI>().setScoretoChange(0);
+		GameObject.Find("Game Logic").GetComponent<UI>().setIDScoretoChange(playerToRespawn);
+		respawningPlayer = false;
+	}
+
+	private void playerEat(int playerThatsEating, int playerThatsEatingLevel, int playerThatsEatingScore)
+	{
+		players[playerThatsEating-1].GetComponent<Player>().level = playerThatsEatingLevel;
+		GameObject.Find("Game Logic").GetComponent<UI>().setScoretoChange(playerThatsEatingScore);
+		GameObject.Find("Game Logic").GetComponent<UI>().setIDScoretoChange(playerThatsEating);
+		playerEating = false;
 	}
 
 	private void readFromQueue()
@@ -517,16 +555,81 @@ public class GameState : MonoBehaviour {
 					case "RIGHT":
 						turningPlayerRight = true;
 						break;
+					default:
+						break;
 					}
 					break;
-				case "updateScore":
-					//timestamp needed here
-					//player ID (belongs to whose score is being updated)
-					//new score
+				case "death":
+					//timestamp?
+					//thing that is dying: player or pellet with their #
+					//set new X and Y of dead
+					//if a player, reset scale and score through player-specific respawn method
+					switch(command[1])
+					{
+					case "1":
+						respawningPlayerX = (float.Parse(command[2]));
+						respawningPlayerY = (float.Parse(command[3]));
+						respawningPlayerID = 1;
+						respawningPlayer = true;
+						break;
+					case "2":
+						respawningPlayerX = (float.Parse(command[2]));
+						respawningPlayerY = (float.Parse(command[3]));
+						respawningPlayerID = 2;
+						respawningPlayer = true;
+						break;
+					case "3":
+						respawningPlayerX = (float.Parse(command[2]));
+						respawningPlayerY = (float.Parse(command[3]));
+						respawningPlayerID = 3;
+						respawningPlayer = true;
+						break;
+					case "4":
+						respawningPlayerX = (float.Parse(command[2]));
+						respawningPlayerY = (float.Parse(command[3]));
+						respawningPlayerID = 4;
+						respawningPlayer = true;
+						break;
+					case "pel1":
+						pellet1X = (float.Parse(command[2]));
+						pellet1Y = (float.Parse(command[3]));
+						settingPelletSpawn = true;
+						break;
+					case "pel2":
+						pellet2X = (float.Parse(command[2]));
+						pellet2Y = (float.Parse(command[3]));
+						settingPelletSpawn = true;
+						break;
+					case "pel3":
+						pellet3X = (float.Parse(command[2]));
+						pellet3Y = (float.Parse(command[3]));
+						settingPelletSpawn = true;
+						break;
+					case "pel4":
+						pellet4X = (float.Parse(command[2]));
+						pellet4Y = (float.Parse(command[3]));
+						settingPelletSpawn = true;
+						break;
+					default:
+						break;
+					}
+					break;
+
+				case "eat":
+					//timestamp?
+					//eaterID
+					playerEatingID = (int.Parse(command[1]));
+					//absScale
+					playerEatingNewLevel = (int.Parse(command[2]));
+					//currentAbsScore
+					playerEatingNewScore = (int.Parse(command[3]));
+					playerEating = true;
+					break;
+				default:
 					break;
 				}
 			}
-			Thread.Sleep(100);
+			Thread.Sleep(20);
 		}
 	}
 
