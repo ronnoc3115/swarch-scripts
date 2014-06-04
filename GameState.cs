@@ -54,6 +54,9 @@ public class GameState : MonoBehaviour {
 	private int playerEatingNewLevel;
 	private int playerEatingNewScore;
 
+	//this player's highscore
+	private int highscore;
+
 	//info on client's user info
 	//used to give UI info to display, and change colors appropriately
 	private int userID;
@@ -72,6 +75,7 @@ public class GameState : MonoBehaviour {
 	private bool turningPlayerRight;
 	private bool respawningPlayer;
 	private bool playerEating;
+	private bool settingHighscore;
 	//instantiate pellets and players
 	private bool gameStart;
 
@@ -125,6 +129,8 @@ public class GameState : MonoBehaviour {
 		playerEatingNewLevel = 1;
 		playerEatingNewScore = 0;
 
+		highscore = 0;
+
 		userID = 0;
 		userName = "";
 		
@@ -142,6 +148,7 @@ public class GameState : MonoBehaviour {
 		turningPlayerRight = false;
 		respawningPlayer = false;
 		playerEating = false;
+		settingHighscore = false;
 		
 		settingUserInfo = false;
 
@@ -237,6 +244,11 @@ public class GameState : MonoBehaviour {
 		if(playerEating)
 		{
 			playerEat(playerEatingID, playerEatingNewLevel, playerEatingNewScore);
+		}
+
+		if(settingHighscore)
+		{
+			setHighscore(highscore);
 		}
 	}
 	
@@ -373,6 +385,12 @@ public class GameState : MonoBehaviour {
 		GameObject.Find("Game Logic").GetComponent<UI>().setScoretoChange(playerThatsEatingScore);
 		GameObject.Find("Game Logic").GetComponent<UI>().setIDScoretoChange(playerThatsEating);
 		playerEating = false;
+	}
+
+	private void setHighscore(int newHighscore)
+	{
+		GameObject.Find("Game Logic").GetComponent<UI>().setHighScore(newHighscore);
+		settingHighscore = false;
 	}
 
 	private void readFromQueue()
@@ -632,6 +650,10 @@ public class GameState : MonoBehaviour {
 					//currentAbsScore
 					playerEatingNewScore = (int.Parse(command[3]));
 					playerEating = true;
+					break;
+				case "highscore":
+					highscore = (int.Parse(command[1]));
+					settingHighscore = true;
 					break;
 				default:
 					break;
