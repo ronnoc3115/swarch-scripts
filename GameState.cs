@@ -173,7 +173,15 @@ public class GameState : MonoBehaviour {
 			ui.showGUI = false;
 			gameStart = false;
 		}
-		
+
+		if(ui.showGUI == false)
+		{
+			GameObject.Find("Pellet1").GetComponent<Pellet>().spawn(pellet1X, pellet1Y);
+			GameObject.Find("Pellet2").GetComponent<Pellet>().spawn(pellet2X, pellet2Y);
+			GameObject.Find("Pellet3").GetComponent<Pellet>().spawn(pellet3X, pellet3Y);
+			GameObject.Find("Pellet4").GetComponent<Pellet>().spawn(pellet4X, pellet4Y);
+		}
+
 		if(settingPelletSpawn)
 		{
 			setPelletSpawn();
@@ -407,7 +415,7 @@ public class GameState : MonoBehaviour {
 						pellet3Y = (float.Parse(command[9]));
 						pellet4X = (float.Parse(command[10]));
 						pellet4Y = (float.Parse(command[11]));
-						settingPelletSpawn = true;
+						//settingPelletSpawn = true;
 						//set player info based on how many players server said are connected
 						if(numPlayers >= 1)
 						{
@@ -593,22 +601,22 @@ public class GameState : MonoBehaviour {
 					case "pel1":
 						pellet1X = (float.Parse(command[2]));
 						pellet1Y = (float.Parse(command[3]));
-						settingPelletSpawn = true;
+						//settingPelletSpawn = true;
 						break;
 					case "pel2":
 						pellet2X = (float.Parse(command[2]));
 						pellet2Y = (float.Parse(command[3]));
-						settingPelletSpawn = true;
+						//settingPelletSpawn = true;
 						break;
 					case "pel3":
 						pellet3X = (float.Parse(command[2]));
 						pellet3Y = (float.Parse(command[3]));
-						settingPelletSpawn = true;
+						//settingPelletSpawn = true;
 						break;
 					case "pel4":
 						pellet4X = (float.Parse(command[2]));
 						pellet4Y = (float.Parse(command[3]));
-						settingPelletSpawn = true;
+						//settingPelletSpawn = true;
 						break;
 					default:
 						break;

@@ -38,6 +38,8 @@ public class Player : MonoBehaviour {
 		ID = 0;
 		//respawn();
 
+		gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+
 		GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, -1.0f * speed);
 
 		arenaBoundsX = (GameObject.Find("Arena").transform.renderer.bounds.size.x);
@@ -51,14 +53,14 @@ public class Player : MonoBehaviour {
 
 		//Trying to set color to blue if it is user's cube
 		//NOT CURRENTLY WORKING
-		if (GameObject.Find("Game Logic").GetComponent<UI>().getPlayerID() != ID)
-		{
-			gameObject.GetComponent<SpriteRenderer>().color = Color.red;
-		}
-		else
-		{
-			gameObject.GetComponent<SpriteRenderer>().color = Color.blue;
-		}
+//		if (GameObject.Find("Game Logic").GetComponent<UI>().getPlayerID() != ID)
+//		{
+//			gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+//		}
+//		else
+//		{
+//			gameObject.GetComponent<SpriteRenderer>().color = Color.blue;
+//		}
 		//set speed/size based on level, which is gained from eating
 		speed = startSpeed*(Mathf.Pow(0.9f, (level-1.0f)));
 		size = startSize*(Mathf.Pow(1.1f, (level-1.0f)));

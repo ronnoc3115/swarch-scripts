@@ -65,6 +65,10 @@ public class UI : MonoBehaviour {
 			highScore = scoretoChange;
 		}
 
+		if(playerID  != 0)
+		{
+			GameObject.Find("Player"+playerID).GetComponent<SpriteRenderer>().color = Color.blue;
+		}
 		//add a little message at the center of the screen
 		//adjust slightly if the user is a new account or not
 		if(!gamePlaying && loginSuccessful)
